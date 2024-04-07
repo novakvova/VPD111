@@ -1,6 +1,9 @@
-﻿namespace WebSurok.Interfaces
+﻿using WebSurok.Data.Entities.Identity;
+
+namespace WebSurok.Interfaces
 {
-    public class IJwtTokenService
+    public interface IJwtTokenService
     {
+        Task<string> CreateToken(UserEntity user);
     }
 }
