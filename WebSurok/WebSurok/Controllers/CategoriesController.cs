@@ -39,9 +39,9 @@ namespace WebSurok.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
-            var user = GetUserAuthAsync();
+            var user = await GetUserAuthAsync();
             var list = _appContext.Categories
                 .Where(u=>u.UserId == user.Id)
                 .Select(x=>_mapper.Map<CategoryItemViewModel>(x))
@@ -51,7 +51,7 @@ namespace WebSurok.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CategoryCreateViewModel model)
         {
-            var user = GetUserAuthAsync();
+            var user = await GetUserAuthAsync();
             var category = new CategoryEntity
             {
                 Name = model.Name,
@@ -88,12 +88,12 @@ namespace WebSurok.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Edit([FromBody] CategoryEditViewModel model)
+        public async Task<IActionResult> Edit([FromForm] CategoryEditViewModel model)
         {
-            var user = GetUserAuthAsync();
+            var user = await GetUserAuthAsync();
             var category = _appContext.Categories
                 .Where(x=>x.UserId==user.Id)
-                .Select(x => _mapper.Map<CategoryItemViewModel>(x))
+                //.Select(x => _mapper.Map<CategoryItemViewModel>(x))
                 .SingleOrDefault(x => x.Id == model.Id);
             if (category == null)
             {
@@ -149,9 +149,9 @@ namespace WebSurok.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var user = GetUserAuthAsync();
+            var user = await GetUserAuthAsync();
             var category = _appContext.Categories
                 .Where(x=>x.UserId == user.Id)
                 .SingleOrDefault(x => x.Id == id);
